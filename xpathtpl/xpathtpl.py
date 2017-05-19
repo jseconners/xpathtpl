@@ -1,7 +1,8 @@
 ######################################################
 #
-# craigdata - pull post data from craiglist from the
-# command line.
+# xpathtpl - simple xpath templating for scraping
+# web pages into python dictionary
+#
 # Written by James Conners (jseconners@gmail.com)
 #
 ######################################################
@@ -14,33 +15,21 @@ import json
 BASE_URL = 'https://www.craigslist.org/about/sites'
 
 TEST_TEMPLATES = {
-    'craigslist-sites': {
-        'countries': {
-            '_xpath': '//section[@class="body"]/h1',
-            'states': {
-                '_xpath': './following-sibling::div[1]/div/h4',
-                '_ukeys': True,
-
-                'cities': {
-                    '_xpath': './following-sibling::ul[1]/li/a'
-                }
-            }
-        }
-    },
-    'github-showcases1': {
-        'showcases': {
-            '_xpath': '//h3[@class="exploregrid-item-title"]',
-        }
-    },
-    'github-showcases2': {
-        'showcases': {
-            '_xpath': '//ul[@class="exploregrid gut-md"]//a',
-            'href': {
-                '_xpath': './@href'
-            },
+    'digg-1': {
+        'digg-stories': {
+            '_xpath': '//div[@class="digg-story__content"]',
             'title': {
-                '_xpath': './h3[1]/text()'
+                '_xpath': './/h2[1]',
             },
+            'source': {
+                '_xpath': './/div[@class="digg-story__metadata-container"]/span[2]'
+            },
+            'digg-count': {
+                '_xpath': './/span[@class="js--digg-count"]'
+            },
+            'description': {
+                '_xpath': './/div[@itemprop="description"]'
+            }
         }
     }
 }
@@ -55,7 +44,7 @@ def _text(e):
     try:
         text = e.text_content()
     except AttributeError:
-        text = str(e)
+        text = e
     return text.strip()
 
 
@@ -108,7 +97,7 @@ def _apply_tpl(tpl, e):
 
     # if this is a single-item list, just
     # return that item without the container
-    if not _ukeys and (len(elms) == 1):
+    if not _ukeys and (len(elms) == 1) and (type(elms[0]) is not dict):
         return elms[0]
     else:
         return elms
@@ -125,6 +114,5 @@ def parse_page(url, tpl):
     return _template_page(page, tpl)
 
 
-#obj = parse_page(BASE_URL, template)
-obj = parse_page('https://github.com/explore', TEST_TEMPLATES['github-showcases2'])
+obj = parse_page('https://digg.com', TEST_TEMPLATES['digg-1'])
 print json.dumps(obj, sort_keys=True, indent=4, separators=(',', ': '))

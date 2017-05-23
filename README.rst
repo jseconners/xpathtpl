@@ -19,7 +19,7 @@ Grab headlines from Digg
             '_xpath': '//h2[@itemprop="headline"]',
         }
     }
-    content = requests.get('http://digg.com', template).content
+    content = requests.get('http://digg.com').content
     headlines = xpathtpl.parse(content, template)
     print headlines
 
@@ -60,7 +60,7 @@ expressions from sub-templates.
         }
       }
     }
-    content = requests.get('http://digg.com', template).content
+    content = requests.get('http://digg.com').content
     headlines = xpathtpl.parse(content, template)
     print headlines
 
@@ -89,7 +89,7 @@ Templates without _xpath keys act as simple containers
         }
       }
     }
-    content = requests.get('http://digg.com', template).content
+    content = requests.get('http://digg.com').content
     headlines = xpathtpl.parse(content, template)
     print headlines
 
@@ -117,7 +117,7 @@ the _ukeys key.
           }
       }
     }
-    content = requests.get('http://digg.com', template).content
+    content = requests.get('http://digg.com').content
     headlines = xpathtpl.parse(content, template)
     print headlines
 

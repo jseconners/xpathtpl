@@ -34,7 +34,7 @@ def _apply_tpl(tpl, e):
         container = {}
         if len(subs):
             for sn in subs.keys():
-                container[sn] = _apply_tpl(e, subs[sn])
+                container[sn] = _apply_tpl(subs[sn], e)
             return container
         else:
             return None

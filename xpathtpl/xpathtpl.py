@@ -72,8 +72,8 @@ def _apply_tpl(tpl, e):
 
 def parse(bcontent, tpl):
     """ Parse page (binary string), applying xpath template """
+    container = {}
     page = lxml.html.fromstring(bcontent)
     for top_name in tpl:
-        tpl[top_name] = _apply_tpl(tpl[top_name], page)
-    return tpl
-
+        container[top_name] = _apply_tpl(tpl[top_name], page)
+    return container

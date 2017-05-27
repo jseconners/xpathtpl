@@ -2,7 +2,8 @@ xpathtpl
 ====================================================
 
 
-Simple xpath templating for scraping website data into python dictionary.
+Simple xpath templating for scraping website data into python dictionary
+using xpath.
 
 
 Examples
